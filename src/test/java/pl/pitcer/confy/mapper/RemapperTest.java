@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.pitcer.confy.ComplexConfigWithConstructor;
-import pl.pitcer.confy.InstanceFactory;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
 public class RemapperTest {

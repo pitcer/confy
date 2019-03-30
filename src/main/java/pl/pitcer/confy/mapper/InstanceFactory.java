@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.confy;
+package pl.pitcer.confy.mapper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

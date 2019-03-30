@@ -26,7 +26,6 @@ package pl.pitcer.confy.mapper;
 
 import java.lang.reflect.Field;
 import java.util.Map;
-import pl.pitcer.confy.InstanceFactory;
 import pl.pitcer.confy.util.BasicTypes;
 
 public class Remapper {
