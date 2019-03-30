@@ -22,43 +22,22 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.confy.mapper;
+package pl.pitcer.confy.util;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
-import pl.pitcer.confy.util.BasicTypes;
 
-public class Mapper {
+//TODO: replace with codecs
+public final class BasicTypes {
 
-	public Map<String, Object> map(Object object) {
-		Class<?> objectClass = object.getClass();
-		Field[] fields = objectClass.getDeclaredFields();
-		Map<String, Object> fieldsMap = new HashMap<>(fields.length);
-		for (Field field : fields) {
-			//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-			//TODO: get name from annotation
-			String fieldName = field.getName();
-			Object fieldValue = getFieldValue(field, object);
-			if (fieldValue != null) {
-				Class<?> fieldValueClass = fieldValue.getClass();
-				if (!BasicTypes.isBasicType(fieldValueClass)) {
-					fieldValue = map(fieldValue);
-				}
-			}
-			fieldsMap.put(fieldName, fieldValue);
-		}
-		return fieldsMap;
+	public static final List<Class<?>> BASIC_TYPES = List.of(boolean.class, Boolean.class, String.class, Number.class, double.class, Double.class, int.class, Integer.class, long.class, Long.class, Iterable.class, Map.class);
+
+	private BasicTypes() {
+		throw new UnsupportedOperationException("Cannot create instance of utility class");
 	}
 
-	@Nullable
-	private Object getFieldValue(Field field, Object fieldHolderObject) {
-		try {
-			field.setAccessible(true);
-			return field.get(fieldHolderObject);
-		} catch (IllegalAccessException exception) {
-			return null;
-		}
+	public static boolean isBasicType(Class<?> type) {
+		return BASIC_TYPES.stream()
+			.anyMatch(basicType -> basicType.isAssignableFrom(type));
 	}
 }
