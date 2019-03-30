@@ -28,6 +28,8 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.pitcer.confy.ComplexConfigWithConstructor;
+import pl.pitcer.confy.ComplexConfigWithConstructorPart;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
 public class MapperTest {
@@ -43,8 +45,22 @@ public class MapperTest {
 	@Test
 	public void testMapWithSimpleConfig() {
 		SimpleConfigWithConstructor config = new SimpleConfigWithConstructor("test", 2);
-		Map<String, Object> map = (Map<String, Object>) this.mapper.map(config).get("SimpleConfigWithConstructor");
+		Map<String, Object> map = this.mapper.map(config);
+		map = (Map<String, Object>) map.get("SimpleConfigWithConstructor");
 		Assertions.assertEquals("test", map.get("foobar"));
 		Assertions.assertEquals(2, map.get("integer"));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMapWithComplexConfig() {
+		ComplexConfigWithConstructor config = new ComplexConfigWithConstructor("test1", 1, new ComplexConfigWithConstructorPart("testPart", 3));
+		Map<String, Object> map = this.mapper.map(config);
+		map = (Map<String, Object>) map.get("ComplexConfigWithConstructor");
+		Assertions.assertEquals("test1", map.get("foobar"));
+		Assertions.assertEquals(1, map.get("integer"));
+		map = (Map<String, Object>) map.get("part");
+		Assertions.assertEquals("testPart", map.get("foobar"));
+		Assertions.assertEquals(3, map.get("integer"));
 	}
 }

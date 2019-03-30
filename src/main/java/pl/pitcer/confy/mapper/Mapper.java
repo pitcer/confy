@@ -26,13 +26,26 @@ package pl.pitcer.confy.mapper;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 public class Mapper {
 
+	private static final List<Class<?>> BASIC_TYPES = List.of(boolean.class, Boolean.class, String.class, Number.class, double.class, Double.class, int.class, Integer.class, long.class, Long.class, Iterable.class, Map.class);
+
 	public Map<String, Object> map(Object object) {
+		Map<String, Object> rootMap = new HashMap<>(1);
 		Class<?> objectClass = object.getClass();
+		//TODO: transform class name to HOCON format (e.g. foo-bar instead of fooBar)
+		//TODO: get name from annotation
+		String className = objectClass.getSimpleName();
+		Map<String, Object> mappedObject = map(objectClass, object);
+		rootMap.put(className, mappedObject);
+		return rootMap;
+	}
+
+	private Map<String, Object> map(Class<?> objectClass, Object object) {
 		Field[] fields = objectClass.getDeclaredFields();
 		Map<String, Object> fieldsMap = new HashMap<>(fields.length);
 		for (Field field : fields) {
@@ -40,14 +53,15 @@ public class Mapper {
 			//TODO: get name from annotation
 			String fieldName = field.getName();
 			Object fieldValue = getFieldValue(field, object);
+			if (fieldValue != null) {
+				Class<?> fieldValueClass = fieldValue.getClass();
+				if (!isBasicType(fieldValueClass)) {
+					fieldValue = map(fieldValueClass, fieldValue);
+				}
+			}
 			fieldsMap.put(fieldName, fieldValue);
 		}
-		//TODO: transform class name to HOCON format (e.g. foo-bar instead of fooBar)
-		//TODO: get name from annotation
-		String className = objectClass.getSimpleName();
-		Map<String, Object> rootMap = new HashMap<>(1);
-		rootMap.put(className, fieldsMap);
-		return rootMap;
+		return fieldsMap;
 	}
 
 	@Nullable
@@ -58,5 +72,10 @@ public class Mapper {
 		} catch (IllegalAccessException exception) {
 			return null;
 		}
+	}
+
+	private boolean isBasicType(Class<?> type) {
+		return BASIC_TYPES.stream()
+			.anyMatch(basicType -> basicType.isAssignableFrom(type));
 	}
 }
