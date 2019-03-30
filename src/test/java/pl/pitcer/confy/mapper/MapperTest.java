@@ -24,6 +24,7 @@
 
 package pl.pitcer.confy.mapper;
 
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,5 +87,12 @@ public class MapperTest {
 		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
 		Assertions.assertEquals(2, map.get("integerA"));
 		Assertions.assertNull(map.get("ignored"));
+	}
+
+	@Test
+	public void testMapKeysOrder() {
+		SimpleAnnotatedConfigWithConstructor config = new SimpleAnnotatedConfigWithConstructor("", "", 0, "");
+		Map<String, Object> map = this.mapper.map(config);
+		Assertions.assertIterableEquals(List.of("foobarA", "foobarWithoutAnnotation", "integerA"), map.keySet());
 	}
 }

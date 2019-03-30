@@ -25,7 +25,7 @@
 package pl.pitcer.confy.mapper;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import pl.pitcer.confy.annotation.Ignore;
@@ -37,7 +37,7 @@ public class Mapper {
 	public Map<String, Object> map(Object object) {
 		Class<?> objectClass = object.getClass();
 		Field[] fields = objectClass.getDeclaredFields();
-		Map<String, Object> fieldsMap = new HashMap<>(fields.length);
+		Map<String, Object> fieldsMap = new LinkedHashMap<>(fields.length);
 		for (Field field : fields) {
 			if (!field.isAnnotationPresent(Ignore.class)) {
 				Object fieldValue = getFieldValue(field, object);
