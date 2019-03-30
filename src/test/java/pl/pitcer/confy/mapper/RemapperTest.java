@@ -28,7 +28,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.pitcer.confy.ComplexAnnotatedConfigWithConstructor;
 import pl.pitcer.confy.ComplexConfigWithConstructor;
+import pl.pitcer.confy.SimpleAnnotatedConfigWithConstructor;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
 public class RemapperTest {
@@ -58,5 +60,30 @@ public class RemapperTest {
 		SimpleConfigWithConstructor part = config.getPart();
 		Assertions.assertEquals("test2", part.getFoobar());
 		Assertions.assertEquals(3, part.getInteger());
+	}
+
+	@Test
+	public void testRemapSimpleAnnotatedConfig() {
+		Map<String, Object> map = Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2, "ignored", "notNull");
+		SimpleAnnotatedConfigWithConstructor config = this.remapper.remap(map, SimpleAnnotatedConfigWithConstructor.class);
+		Assertions.assertEquals("test", config.getFoobar());
+		Assertions.assertEquals("test2", config.getFoobarWithoutAnnotation());
+		Assertions.assertEquals(2, config.getInteger());
+		Assertions.assertNull(config.getIgnored());
+	}
+
+	@Test
+	public void testRemapComplexAnnotatedConfig() {
+		Map<String, Object> map = Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2, "part", Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2));
+		ComplexAnnotatedConfigWithConstructor config = this.remapper.remap(map, ComplexAnnotatedConfigWithConstructor.class);
+		Assertions.assertEquals("test", config.getFoobar());
+		Assertions.assertEquals("test2", config.getFoobarWithoutAnnotation());
+		Assertions.assertEquals(2, config.getInteger());
+		Assertions.assertNull(config.getIgnored());
+		SimpleAnnotatedConfigWithConstructor part = config.getPart();
+		Assertions.assertEquals("test", part.getFoobar());
+		Assertions.assertEquals("test2", part.getFoobarWithoutAnnotation());
+		Assertions.assertEquals(2, part.getInteger());
+		Assertions.assertNull(part.getIgnored());
 	}
 }

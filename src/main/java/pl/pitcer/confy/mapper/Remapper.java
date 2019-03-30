@@ -26,6 +26,8 @@ package pl.pitcer.confy.mapper;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import pl.pitcer.confy.annotation.Ignore;
+import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
 
 public class Remapper {
@@ -41,18 +43,27 @@ public class Remapper {
 		T instance = this.instanceFactory.createInstance(clazz);
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-			//TODO: get name from annotation
-			String fieldName = field.getName();
-			Object value = map.get(fieldName);
-			Class<?> fieldType = field.getType();
-			if (!BasicTypes.isBasicType(fieldType)) {
-				Map<String, Object> valueMap = (Map<String, Object>) value;
-				value = remap(valueMap, fieldType);
+			if (!field.isAnnotationPresent(Ignore.class)) {
+				String fieldName = getFieldName(field);
+				Object value = map.get(fieldName);
+				Class<?> fieldType = field.getType();
+				if (!BasicTypes.isBasicType(fieldType)) {
+					Map<String, Object> valueMap = (Map<String, Object>) value;
+					value = remap(valueMap, fieldType);
+				}
+				setFieldValue(field, instance, value);
 			}
-			setFieldValue(field, instance, value);
 		}
 		return instance;
+	}
+
+	private String getFieldName(Field field) {
+		Property property = field.getAnnotation(Property.class);
+		if (property != null) {
+			return property.value();
+		}
+		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
+		return field.getName();
 	}
 
 	private void setFieldValue(Field field, Object instance, Object value) {
