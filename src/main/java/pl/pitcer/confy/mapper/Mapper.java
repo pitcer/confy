@@ -40,27 +40,16 @@ public class Mapper {
 		Map<String, Object> fieldsMap = new HashMap<>(fields.length);
 		for (Field field : fields) {
 			if (!field.isAnnotationPresent(Ignore.class)) {
-				String fieldName = getFieldName(field);
 				Object fieldValue = getFieldValue(field, object);
-				if (fieldValue != null) {
-					Class<?> fieldValueClass = fieldValue.getClass();
-					if (!BasicTypes.isBasicType(fieldValueClass)) {
-						fieldValue = map(fieldValue);
-					}
+				Class<?> fieldType = field.getType();
+				if (!BasicTypes.isBasicType(fieldType) && fieldValue != null) {
+					fieldValue = map(fieldValue);
 				}
+				String fieldName = getFieldName(field);
 				fieldsMap.put(fieldName, fieldValue);
 			}
 		}
 		return fieldsMap;
-	}
-
-	private String getFieldName(Field field) {
-		Property property = field.getAnnotation(Property.class);
-		if (property != null) {
-			return property.value();
-		}
-		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-		return field.getName();
 	}
 
 	@Nullable
@@ -71,5 +60,14 @@ public class Mapper {
 		} catch (IllegalAccessException exception) {
 			return null;
 		}
+	}
+
+	private String getFieldName(Field field) {
+		Property property = field.getAnnotation(Property.class);
+		if (property != null) {
+			return property.value();
+		}
+		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
+		return field.getName();
 	}
 }
