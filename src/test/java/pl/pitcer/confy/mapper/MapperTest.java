@@ -28,8 +28,11 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.pitcer.confy.ComplexAnnotatedConfigWithConstructor;
+import pl.pitcer.confy.ComplexAnnotatedConfigWithConstructorPart;
 import pl.pitcer.confy.ComplexConfigWithConstructor;
 import pl.pitcer.confy.ComplexConfigWithConstructorPart;
+import pl.pitcer.confy.SimpleAnnotatedConfigWithConstructor;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
 public class MapperTest {
@@ -59,5 +62,31 @@ public class MapperTest {
 		map = (Map<String, Object>) map.get("part");
 		Assertions.assertEquals("testPart", map.get("foobar"));
 		Assertions.assertEquals(3, map.get("integer"));
+	}
+
+	@Test
+	public void testMapWithSimpleAnnotatedConfig() {
+		SimpleAnnotatedConfigWithConstructor config = new SimpleAnnotatedConfigWithConstructor("test", "test2", 2, "notnull");
+		Map<String, Object> map = this.mapper.map(config);
+		Assertions.assertEquals("test", map.get("foobarA"));
+		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals(2, map.get("integerA"));
+		Assertions.assertNull(map.get("ignored"));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMapWithComplexAnnotatedConfig() {
+		ComplexAnnotatedConfigWithConstructor config = new ComplexAnnotatedConfigWithConstructor("test", "test2", 2, "notnull", new ComplexAnnotatedConfigWithConstructorPart("test", "test2", 2, "notnull"));
+		Map<String, Object> map = this.mapper.map(config);
+		Assertions.assertEquals("test", map.get("foobarA"));
+		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals(2, map.get("integerA"));
+		Assertions.assertNull(map.get("ignored"));
+		map = (Map<String, Object>) map.get("part");
+		Assertions.assertEquals("test", map.get("foobarA"));
+		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals(2, map.get("integerA"));
+		Assertions.assertNull(map.get("ignored"));
 	}
 }

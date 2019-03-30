@@ -28,6 +28,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import pl.pitcer.confy.annotation.Ignore;
+import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
 
 public class Mapper {
@@ -37,19 +39,28 @@ public class Mapper {
 		Field[] fields = objectClass.getDeclaredFields();
 		Map<String, Object> fieldsMap = new HashMap<>(fields.length);
 		for (Field field : fields) {
-			//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-			//TODO: get name from annotation
-			String fieldName = field.getName();
-			Object fieldValue = getFieldValue(field, object);
-			if (fieldValue != null) {
-				Class<?> fieldValueClass = fieldValue.getClass();
-				if (!BasicTypes.isBasicType(fieldValueClass)) {
-					fieldValue = map(fieldValue);
+			if (!field.isAnnotationPresent(Ignore.class)) {
+				String fieldName = getFieldName(field);
+				Object fieldValue = getFieldValue(field, object);
+				if (fieldValue != null) {
+					Class<?> fieldValueClass = fieldValue.getClass();
+					if (!BasicTypes.isBasicType(fieldValueClass)) {
+						fieldValue = map(fieldValue);
+					}
 				}
+				fieldsMap.put(fieldName, fieldValue);
 			}
-			fieldsMap.put(fieldName, fieldValue);
 		}
 		return fieldsMap;
+	}
+
+	private String getFieldName(Field field) {
+		Property property = field.getAnnotation(Property.class);
+		if (property != null) {
+			return property.value();
+		}
+		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
+		return field.getName();
 	}
 
 	@Nullable
