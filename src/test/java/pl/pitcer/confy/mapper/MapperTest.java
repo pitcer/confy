@@ -41,12 +41,10 @@ public class MapperTest {
 		this.mapper = new Mapper();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapWithSimpleConfig() {
 		SimpleConfigWithConstructor config = new SimpleConfigWithConstructor("test", 2);
 		Map<String, Object> map = this.mapper.map(config);
-		map = (Map<String, Object>) map.get("SimpleConfigWithConstructor");
 		Assertions.assertEquals("test", map.get("foobar"));
 		Assertions.assertEquals(2, map.get("integer"));
 	}
@@ -56,7 +54,6 @@ public class MapperTest {
 	public void testMapWithComplexConfig() {
 		ComplexConfigWithConstructor config = new ComplexConfigWithConstructor("test1", 1, new ComplexConfigWithConstructorPart("testPart", 3));
 		Map<String, Object> map = this.mapper.map(config);
-		map = (Map<String, Object>) map.get("ComplexConfigWithConstructor");
 		Assertions.assertEquals("test1", map.get("foobar"));
 		Assertions.assertEquals(1, map.get("integer"));
 		map = (Map<String, Object>) map.get("part");
