@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.pitcer.confy.ComplexConfigWithConstructor;
-import pl.pitcer.confy.ComplexConfigWithConstructorPart;
 import pl.pitcer.confy.InstanceFactory;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
@@ -57,7 +56,7 @@ public class RemapperTest {
 		ComplexConfigWithConstructor config = this.remapper.remap(map, ComplexConfigWithConstructor.class);
 		Assertions.assertEquals("test", config.getFoobar());
 		Assertions.assertEquals(2, config.getInteger());
-		ComplexConfigWithConstructorPart part = config.getPart();
+		SimpleConfigWithConstructor part = config.getPart();
 		Assertions.assertEquals("test2", part.getFoobar());
 		Assertions.assertEquals(3, part.getInteger());
 	}

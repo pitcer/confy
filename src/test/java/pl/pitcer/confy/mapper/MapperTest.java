@@ -29,9 +29,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.pitcer.confy.ComplexAnnotatedConfigWithConstructor;
-import pl.pitcer.confy.ComplexAnnotatedConfigWithConstructorPart;
 import pl.pitcer.confy.ComplexConfigWithConstructor;
-import pl.pitcer.confy.ComplexConfigWithConstructorPart;
 import pl.pitcer.confy.SimpleAnnotatedConfigWithConstructor;
 import pl.pitcer.confy.SimpleConfigWithConstructor;
 
@@ -55,7 +53,7 @@ public class MapperTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapWithComplexConfig() {
-		ComplexConfigWithConstructor config = new ComplexConfigWithConstructor("test1", 1, new ComplexConfigWithConstructorPart("testPart", 3));
+		ComplexConfigWithConstructor config = new ComplexConfigWithConstructor("test1", 1, new SimpleConfigWithConstructor("testPart", 3));
 		Map<String, Object> map = this.mapper.map(config);
 		Assertions.assertEquals("test1", map.get("foobar"));
 		Assertions.assertEquals(1, map.get("integer"));
@@ -77,7 +75,7 @@ public class MapperTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapWithComplexAnnotatedConfig() {
-		ComplexAnnotatedConfigWithConstructor config = new ComplexAnnotatedConfigWithConstructor("test", "test2", 2, "notnull", new ComplexAnnotatedConfigWithConstructorPart("test", "test2", 2, "notnull"));
+		ComplexAnnotatedConfigWithConstructor config = new ComplexAnnotatedConfigWithConstructor("test", "test2", 2, "notnull", new SimpleAnnotatedConfigWithConstructor("test", "test2", 2, "notnull"));
 		Map<String, Object> map = this.mapper.map(config);
 		Assertions.assertEquals("test", map.get("foobarA"));
 		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));

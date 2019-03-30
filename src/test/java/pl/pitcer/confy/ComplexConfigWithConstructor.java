@@ -28,9 +28,9 @@ public class ComplexConfigWithConstructor {
 
 	private String foobar;
 	private Integer integer;
-	private ComplexConfigWithConstructorPart part;
+	private SimpleConfigWithConstructor part;
 
-	public ComplexConfigWithConstructor(String foobar, Integer integer, ComplexConfigWithConstructorPart part) {
+	public ComplexConfigWithConstructor(String foobar, Integer integer, SimpleConfigWithConstructor part) {
 		this.foobar = foobar;
 		this.integer = integer;
 		this.part = part;
@@ -54,11 +54,11 @@ public class ComplexConfigWithConstructor {
 		this.integer = integer;
 	}
 
-	public ComplexConfigWithConstructorPart getPart() {
+	public SimpleConfigWithConstructor getPart() {
 		return this.part;
 	}
 
-	public void setPart(ComplexConfigWithConstructorPart part) {
+	public void setPart(SimpleConfigWithConstructor part) {
 		this.part = part;
 	}
 }

@@ -36,9 +36,9 @@ public class ComplexAnnotatedConfigWithConstructor {
 	private Integer integer;
 	@Ignore
 	private String ignored;
-	private ComplexAnnotatedConfigWithConstructorPart part;
+	private SimpleAnnotatedConfigWithConstructor part;
 
-	public ComplexAnnotatedConfigWithConstructor(String foobar, String foobarWithoutAnnotation, Integer integer, String ignored, ComplexAnnotatedConfigWithConstructorPart part) {
+	public ComplexAnnotatedConfigWithConstructor(String foobar, String foobarWithoutAnnotation, Integer integer, String ignored, SimpleAnnotatedConfigWithConstructor part) {
 		this.foobar = foobar;
 		this.foobarWithoutAnnotation = foobarWithoutAnnotation;
 		this.integer = integer;
@@ -80,11 +80,11 @@ public class ComplexAnnotatedConfigWithConstructor {
 		this.ignored = ignored;
 	}
 
-	public ComplexAnnotatedConfigWithConstructorPart getPart() {
+	public SimpleAnnotatedConfigWithConstructor getPart() {
 		return this.part;
 	}
 
-	public void setPart(ComplexAnnotatedConfigWithConstructorPart part) {
+	public void setPart(SimpleAnnotatedConfigWithConstructor part) {
 		this.part = part;
 	}
 }
