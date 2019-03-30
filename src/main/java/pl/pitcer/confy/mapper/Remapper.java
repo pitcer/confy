@@ -27,6 +27,7 @@ package pl.pitcer.confy.mapper;
 import java.lang.reflect.Field;
 import java.util.Map;
 import pl.pitcer.confy.InstanceFactory;
+import pl.pitcer.confy.util.BasicTypes;
 
 public class Remapper {
 
@@ -36,6 +37,7 @@ public class Remapper {
 		this.instanceFactory = instanceFactory;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T remap(Map<String, Object> map, Class<T> clazz) {
 		T instance = this.instanceFactory.createInstance(clazz);
 		Field[] fields = clazz.getDeclaredFields();
@@ -44,6 +46,11 @@ public class Remapper {
 			//TODO: get name from annotation
 			String fieldName = field.getName();
 			Object value = map.get(fieldName);
+			Class<?> fieldType = field.getType();
+			if (!BasicTypes.isBasicType(fieldType)) {
+				Map<String, Object> valueMap = (Map<String, Object>) value;
+				value = remap(valueMap, fieldType);
+			}
 			setFieldValue(field, instance, value);
 		}
 		return instance;
