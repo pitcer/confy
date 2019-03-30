@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.pitcer.confy.annotation.Ignore;
 import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
+import pl.pitcer.confy.util.NameTransformer;
 
 public class Mapper {
 
@@ -67,7 +68,7 @@ public class Mapper {
 		if (property != null) {
 			return property.value();
 		}
-		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-		return field.getName();
+		String fieldName = field.getName();
+		return NameTransformer.transformName(fieldName);
 	}
 }

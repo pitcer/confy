@@ -29,6 +29,7 @@ import java.util.Map;
 import pl.pitcer.confy.annotation.Ignore;
 import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
+import pl.pitcer.confy.util.NameTransformer;
 
 public class Remapper {
 
@@ -62,8 +63,8 @@ public class Remapper {
 		if (property != null) {
 			return property.value();
 		}
-		//TODO: transform field name to HOCON format (e.g. foo-bar instead of fooBar)
-		return field.getName();
+		String fieldName = field.getName();
+		return NameTransformer.transformName(fieldName);
 	}
 
 	private void setFieldValue(Field field, Object instance, Object value) {
