@@ -68,7 +68,7 @@ public class MapperTest {
 		SimpleAnnotatedConfigWithConstructor config = new SimpleAnnotatedConfigWithConstructor("test", "test2", 2, "notnull");
 		Map<String, Object> map = this.mapper.map(config);
 		Assertions.assertEquals("test", map.get("foobarA"));
-		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals("test2", map.get("foobar-without-annotation"));
 		Assertions.assertEquals(2, map.get("integerA"));
 		Assertions.assertNull(map.get("ignored"));
 	}
@@ -79,12 +79,12 @@ public class MapperTest {
 		ComplexAnnotatedConfigWithConstructor config = new ComplexAnnotatedConfigWithConstructor("test", "test2", 2, "notnull", new SimpleAnnotatedConfigWithConstructor("test", "test2", 2, "notnull"));
 		Map<String, Object> map = this.mapper.map(config);
 		Assertions.assertEquals("test", map.get("foobarA"));
-		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals("test2", map.get("foobar-without-annotation"));
 		Assertions.assertEquals(2, map.get("integerA"));
 		Assertions.assertNull(map.get("ignored"));
 		map = (Map<String, Object>) map.get("part");
 		Assertions.assertEquals("test", map.get("foobarA"));
-		Assertions.assertEquals("test2", map.get("foobarWithoutAnnotation"));
+		Assertions.assertEquals("test2", map.get("foobar-without-annotation"));
 		Assertions.assertEquals(2, map.get("integerA"));
 		Assertions.assertNull(map.get("ignored"));
 	}
@@ -93,6 +93,6 @@ public class MapperTest {
 	public void testMapKeysOrder() {
 		SimpleAnnotatedConfigWithConstructor config = new SimpleAnnotatedConfigWithConstructor("", "", 0, "");
 		Map<String, Object> map = this.mapper.map(config);
-		Assertions.assertIterableEquals(List.of("foobarA", "foobarWithoutAnnotation", "integerA"), map.keySet());
+		Assertions.assertIterableEquals(List.of("foobarA", "foobar-without-annotation", "integerA"), map.keySet());
 	}
 }

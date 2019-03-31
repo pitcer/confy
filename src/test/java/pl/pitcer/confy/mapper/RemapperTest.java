@@ -64,7 +64,7 @@ public class RemapperTest {
 
 	@Test
 	public void testRemapSimpleAnnotatedConfig() {
-		Map<String, Object> map = Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2, "ignored", "notNull");
+		Map<String, Object> map = Map.of("foobarA", "test", "foobar-without-annotation", "test2", "integerA", 2, "ignored", "notNull");
 		SimpleAnnotatedConfigWithConstructor config = this.remapper.remap(map, SimpleAnnotatedConfigWithConstructor.class);
 		Assertions.assertEquals("test", config.getFoobar());
 		Assertions.assertEquals("test2", config.getFoobarWithoutAnnotation());
@@ -74,7 +74,7 @@ public class RemapperTest {
 
 	@Test
 	public void testRemapComplexAnnotatedConfig() {
-		Map<String, Object> map = Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2, "part", Map.of("foobarA", "test", "foobarWithoutAnnotation", "test2", "integerA", 2));
+		Map<String, Object> map = Map.of("foobarA", "test", "foobar-without-annotation", "test2", "integerA", 2, "part", Map.of("foobarA", "test", "foobar-without-annotation", "test2", "integerA", 2));
 		ComplexAnnotatedConfigWithConstructor config = this.remapper.remap(map, ComplexAnnotatedConfigWithConstructor.class);
 		Assertions.assertEquals("test", config.getFoobar());
 		Assertions.assertEquals("test2", config.getFoobarWithoutAnnotation());
