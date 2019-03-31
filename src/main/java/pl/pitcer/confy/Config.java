@@ -74,6 +74,10 @@ public class Config<T> {
 	}
 
 	private String getConfigName() {
+		pl.pitcer.confy.annotation.Config config = this.configClass.getAnnotation(pl.pitcer.confy.annotation.Config.class);
+		if (config != null) {
+			return config.value();
+		}
 		String name = this.configClass.getSimpleName();
 		return NameTransformer.transformName(name);
 	}

@@ -24,9 +24,11 @@
 
 package pl.pitcer.confy;
 
+import pl.pitcer.confy.annotation.Config;
 import pl.pitcer.confy.annotation.Ignore;
 import pl.pitcer.confy.annotation.Property;
 
+@Config("foobar-config")
 public class ComplexAnnotatedConfigWithConstructor {
 
 	@Property("foobarA")
