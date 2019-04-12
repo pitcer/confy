@@ -39,8 +39,7 @@ public class RemapperTest {
 
 	@BeforeEach
 	public void setUp() {
-		InstanceFactory instanceFactory = new InstanceFactory();
-		this.remapper = new Remapper(instanceFactory);
+		this.remapper = new Remapper();
 	}
 
 	@Test

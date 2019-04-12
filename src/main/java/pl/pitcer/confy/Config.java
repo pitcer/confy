@@ -33,7 +33,6 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigRenderOptions;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueFactory;
-import pl.pitcer.confy.mapper.InstanceFactory;
 import pl.pitcer.confy.mapper.Mapper;
 import pl.pitcer.confy.mapper.Remapper;
 import pl.pitcer.confy.util.NameTransformer;
@@ -43,7 +42,7 @@ public class Config<T> {
 	private Class<? extends T> configClass;
 	private File file;
 	private Mapper mapper = new Mapper();
-	private Remapper remapper = new Remapper(new InstanceFactory());
+	private Remapper remapper = new Remapper();
 
 	public Config(Class<? extends T> configClass, File file) {
 		this.configClass = configClass;

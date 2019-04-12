@@ -29,7 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.Nullable;
 import sun.reflect.ReflectionFactory;
 
-public class InstanceFactory {
+public class InstanceFactory<T> {
 
 	@SuppressWarnings("UseOfSunClasses")
 	private static final ReflectionFactory REFLECTION_FACTORY = ReflectionFactory.getReflectionFactory();
@@ -43,9 +43,15 @@ public class InstanceFactory {
 		}
 	}
 
-	public <T> T createInstance(Class<T> clazz) {
+	private Class<T> instanceClass;
+
+	public InstanceFactory(Class<T> instanceClass) {
+		this.instanceClass = instanceClass;
+	}
+
+	public T createInstance() {
 		try {
-			Constructor<T> constructor = getConstructor(clazz);
+			Constructor<T> constructor = getConstructor();
 			constructor.setAccessible(true);
 			return constructor.newInstance();
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
@@ -53,26 +59,26 @@ public class InstanceFactory {
 		}
 	}
 
-	private <T> Constructor<T> getConstructor(Class<T> clazz) {
-		Constructor<T> emptyConstructor = getEmptyConstructor(clazz);
+	private Constructor<T> getConstructor() {
+		Constructor<T> emptyConstructor = getEmptyConstructor();
 		if (emptyConstructor != null) {
 			return emptyConstructor;
 		}
-		return getSerializationConstructor(clazz);
+		return getSerializationConstructor();
 	}
 
 	@Nullable
-	private <T> Constructor<T> getEmptyConstructor(Class<T> clazz) {
+	private Constructor<T> getEmptyConstructor() {
 		try {
-			return clazz.getDeclaredConstructor();
+			return this.instanceClass.getDeclaredConstructor();
 		} catch (NoSuchMethodException exception) {
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> Constructor<T> getSerializationConstructor(Class<T> clazz) {
-		Constructor<?> constructor = REFLECTION_FACTORY.newConstructorForSerialization(clazz, OBJECT_CONSTRUCTOR);
+	private Constructor<T> getSerializationConstructor() {
+		Constructor<?> constructor = REFLECTION_FACTORY.newConstructorForSerialization(this.instanceClass, OBJECT_CONSTRUCTOR);
 		return (Constructor<T>) constructor;
 	}
 }

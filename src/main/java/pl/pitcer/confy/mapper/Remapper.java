@@ -33,15 +33,10 @@ import pl.pitcer.confy.util.NameTransformer;
 
 public class Remapper {
 
-	private InstanceFactory instanceFactory;
-
-	public Remapper(InstanceFactory instanceFactory) {
-		this.instanceFactory = instanceFactory;
-	}
-
 	@SuppressWarnings("unchecked")
 	public <T> T remap(Map<String, Object> map, Class<T> clazz) {
-		T instance = this.instanceFactory.createInstance(clazz);
+		InstanceFactory<T> instanceFactory = new InstanceFactory<>(clazz);
+		T instance = instanceFactory.createInstance();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			if (!field.isAnnotationPresent(Ignore.class)) {
