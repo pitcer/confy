@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pitcer/confy.svg)](https://travis-ci.org/pitcer/confy)
 [![Download](https://api.bintray.com/packages/pitcer/maven-public/confy/images/download.svg)](https://bintray.com/pitcer/maven-public/confy/_latestVersion)
 
 # Confy
