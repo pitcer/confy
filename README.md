@@ -6,6 +6,20 @@ Configuration library.
 
 ## Add to project
 
+### Gradle
+
+```gradle
+repositories {
+    maven {
+        url 'https://jcenter.bintray.com'
+    }
+}
+
+dependencies {
+    implementation 'pl.pitcer:confy:1.0.0'
+}
+```
+
 ### Gradle Kotlin DSL
 
 ```kotlin
