@@ -36,38 +36,38 @@ public final class NameTransformer {
 		for (int index = 0; index < nameLength; index++) {
 			char character = name.charAt(index);
 			if (Character.isUpperCase(character)) {
+				character = Character.toLowerCase(character);
 				if (isPreviousCharacterLowerCase(name, index) || isPreviousCharacterUpperCase(name, index) && isNextCharacterLowerCase(name, index)) {
 					builder.append('-');
 				}
-				character = Character.toLowerCase(character);
 			}
 			builder.append(character);
 		}
 		return builder.toString();
 	}
 
-	private static boolean isPreviousCharacterLowerCase(String string, int index) {
-		if (index > 0) {
-			char previousCharacter = string.charAt(index - 1);
-			return Character.isLowerCase(previousCharacter);
+	private static boolean isPreviousCharacterLowerCase(String name, int index) {
+		if (index == 0) {
+			return false;
 		}
-		return false;
+		char previousCharacter = name.charAt(index - 1);
+		return Character.isLowerCase(previousCharacter);
 	}
 
-	private static boolean isPreviousCharacterUpperCase(String string, int index) {
-		if (index > 0) {
-			char previousCharacter = string.charAt(index - 1);
-			return Character.isUpperCase(previousCharacter);
+	private static boolean isPreviousCharacterUpperCase(String name, int index) {
+		if (index == 0) {
+			return false;
 		}
-		return false;
+		char previousCharacter = name.charAt(index - 1);
+		return Character.isUpperCase(previousCharacter);
 	}
 
-	private static boolean isNextCharacterLowerCase(String string, int index) {
+	private static boolean isNextCharacterLowerCase(String name, int index) {
 		int nextIndex = index + 1;
-		if (nextIndex < string.length()) {
-			char nextCharacter = string.charAt(nextIndex);
-			return Character.isLowerCase(nextCharacter);
+		if (nextIndex >= name.length()) {
+			return false;
 		}
-		return false;
+		char nextCharacter = name.charAt(nextIndex);
+		return Character.isLowerCase(nextCharacter);
 	}
 }
