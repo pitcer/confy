@@ -38,19 +38,19 @@ publishing {
 }
 
 bintray {
-	user = project.property("bintray-user") as String
-	key = project.property("bintray-api-key") as String
+	user = properties["bintray-user"] as String?
+	key = properties["bintray-api-key"] as String?
 	publish = true
 	setPublications("maven")
 	pkg(closureOf<BintrayExtension.PackageConfig> {
-		repo = project.property("bintray-repository") as String
+		repo = properties["bintray-repository"] as String?
 		name = project.name
 		desc = project.description
-		websiteUrl = project.property("vcs-url") as String
+		websiteUrl = properties["vcs-url"] as String
 		issueTrackerUrl = "$websiteUrl/issues"
 		vcsUrl = "$websiteUrl.git"
-		setLicenses(project.property("license") as String)
-		setLabels(*(project.property("labels") as String).split(",").toTypedArray())
+		setLicenses(properties["license"] as String)
+		setLabels(*(properties["labels"] as String).split(",").toTypedArray())
 	})
 }
 
