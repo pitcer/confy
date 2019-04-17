@@ -27,7 +27,6 @@ task<Jar>("sourcesJar") {
 	archiveClassifier.set("sources")
 }
 
-
 publishing {
 	publications {
 		create<MavenPublication>("maven") {
