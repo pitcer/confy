@@ -22,35 +22,19 @@
  * SOFTWARE.
  */
 
-package pl.pitcer.confy;
+package pl.pitcer.confy.util;
 
-public class SimpleConfigWithConstructor {
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
-	public static String staticField = "notstring";
+public final class ReflectionHelper {
 
-	private String foobar;
-	private Integer integer;
-
-	public SimpleConfigWithConstructor(String foobar, Integer integer) {
-		this.foobar = foobar;
-		this.integer = integer;
+	private ReflectionHelper() {
+		throw new UnsupportedOperationException("Cannot create instance of utility class");
 	}
 
-	public SimpleConfigWithConstructor() {}
-
-	public String getFoobar() {
-		return this.foobar;
-	}
-
-	public void setFoobar(String foobar) {
-		this.foobar = foobar;
-	}
-
-	public Integer getInteger() {
-		return this.integer;
-	}
-
-	public void setInteger(Integer integer) {
-		this.integer = integer;
+	public static boolean isStatic(Field field) {
+		int modifiers = field.getModifiers();
+		return Modifier.isStatic(modifiers);
 	}
 }

@@ -32,6 +32,7 @@ import pl.pitcer.confy.annotation.Ignore;
 import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
 import pl.pitcer.confy.util.NameTransformer;
+import pl.pitcer.confy.util.ReflectionHelper;
 
 public class Mapper {
 
@@ -40,7 +41,7 @@ public class Mapper {
 		Field[] fields = objectClass.getDeclaredFields();
 		Map<String, Object> fieldsMap = new LinkedHashMap<>(fields.length);
 		for (Field field : fields) {
-			if (!field.isAnnotationPresent(Ignore.class)) {
+			if (!field.isAnnotationPresent(Ignore.class) && !ReflectionHelper.isStatic(field)) {
 				Object fieldValue = getFieldValue(field, object);
 				Class<?> fieldType = field.getType();
 				if (!BasicTypes.isBasicType(fieldType) && fieldValue != null) {

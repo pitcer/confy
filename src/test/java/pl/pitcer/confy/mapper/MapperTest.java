@@ -47,6 +47,7 @@ public class MapperTest {
 	public void testMapWithSimpleConfig() {
 		SimpleConfigWithConstructor config = new SimpleConfigWithConstructor("test", 2);
 		Map<String, Object> map = this.mapper.map(config);
+		Assertions.assertNull(map.get("static-field"));
 		Assertions.assertEquals("test", map.get("foobar"));
 		Assertions.assertEquals(2, map.get("integer"));
 	}

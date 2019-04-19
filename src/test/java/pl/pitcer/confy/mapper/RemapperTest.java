@@ -44,8 +44,9 @@ public class RemapperTest {
 
 	@Test
 	public void testRemapSimpleConfig() {
-		Map<String, Object> map = Map.of("foobar", "test", "integer", 2);
+		Map<String, Object> map = Map.of("static-field", "string", "foobar", "test", "integer", 2);
 		SimpleConfigWithConstructor config = this.remapper.remap(map, SimpleConfigWithConstructor.class);
+		Assertions.assertNotSame("string", SimpleConfigWithConstructor.staticField);
 		Assertions.assertEquals("test", config.getFoobar());
 		Assertions.assertEquals(2, config.getInteger());
 	}

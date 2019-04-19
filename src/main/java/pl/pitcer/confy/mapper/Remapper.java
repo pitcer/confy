@@ -30,6 +30,7 @@ import pl.pitcer.confy.annotation.Ignore;
 import pl.pitcer.confy.annotation.Property;
 import pl.pitcer.confy.util.BasicTypes;
 import pl.pitcer.confy.util.NameTransformer;
+import pl.pitcer.confy.util.ReflectionHelper;
 
 public class Remapper {
 
@@ -39,7 +40,7 @@ public class Remapper {
 		T instance = instanceFactory.createInstance();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			if (!field.isAnnotationPresent(Ignore.class)) {
+			if (!field.isAnnotationPresent(Ignore.class) && !ReflectionHelper.isStatic(field)) {
 				String fieldName = getFieldName(field);
 				Object value = map.get(fieldName);
 				Class<?> fieldType = field.getType();
